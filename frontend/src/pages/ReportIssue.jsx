@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ArrowLeft, Camera, Upload, X } from 'lucide-react';
+import { ArrowLeft, Camera, Upload, X, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './ReportIssue.css';
 import LocationPicker from './LocationPicker';
@@ -11,10 +11,13 @@ const ReportIssue = () => {
     category: '',
     intensity: 3,
     location: '',
-    photo: null
+    photo: null,
+    pdf: null
   });
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [pdfPreview, setPdfPreview] = useState(null);
   const fileInputRef = useRef(null);
+  const pdfInputRef = useRef(null);
 
   const categories = [
     'Road Issues',
@@ -57,6 +60,28 @@ const ReportIssue = () => {
     }
   };
 
+  const handlePdfUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        alert('PDF file size should be less than 10MB');
+        return;
+      }
+      
+      setFormData((prev) => ({
+        ...prev,
+        pdf: file
+      }));
+      
+      setPdfPreview({
+        name: file.name,
+        size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
+      });
+    } else {
+      alert('Please select a valid PDF file');
+    }
+  };
+
   const handleIntensityChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -66,7 +91,7 @@ const ReportIssue = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { description, category, intensity, location, photo } = formData;
+    const { description, category, intensity, location, photo, pdf } = formData;
 
     if (!description.trim() || !category || !location.trim()) {
       alert('Please fill all required fields.');
@@ -80,6 +105,9 @@ const ReportIssue = () => {
     data.append('location', location);
     if (photo) {
       data.append('photo', photo);
+    }
+    if (pdf) {
+      data.append('pdf', pdf);
     }
 
     try {
@@ -149,6 +177,51 @@ const ReportIssue = () => {
                 type="file"
                 accept="image/*"
                 onChange={handlePhotoUpload}
+                className="file-input"
+              />
+            </div>
+          </div>
+
+          {/* PDF Upload Section */}
+          <div className="form-section">
+            <label className="section-label">Upload PDF Document (Optional)</label>
+            <div className="pdf-upload-area">
+              {pdfPreview ? (
+                <div className="pdf-preview">
+                  <div className="pdf-info">
+                    <FileText size={32} />
+                    <div className="pdf-details">
+                      <span className="pdf-name">{pdfPreview.name}</span>
+                      <small className="pdf-size">{pdfPreview.size}</small>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="remove-pdf"
+                    onClick={() => {
+                      setPdfPreview(null);
+                      setFormData((prev) => ({ ...prev, pdf: null }));
+                      pdfInputRef.current.value = '';
+                    }}
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className="upload-placeholder"
+                  onClick={() => pdfInputRef.current?.click()}
+                >
+                  <FileText size={32} />
+                  <span>Click to upload PDF</span>
+                  <small>PDF up to 10MB</small>
+                </div>
+              )}
+              <input
+                ref={pdfInputRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={handlePdfUpload}
                 className="file-input"
               />
             </div>

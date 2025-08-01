@@ -649,3 +649,148 @@
     padding: 16px;
   }
 }
+
+/* PDF Upload Styles - Matching the existing modern design */
+.pdf-upload-area {
+  position: relative;
+}
+
+.pdf-upload-area .upload-placeholder {
+  border: 3px dashed #cbd5e1;
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #374151;
+}
+
+.pdf-upload-area .upload-placeholder::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+  transform: rotate(-45deg);
+  transition: all 0.6s;
+  opacity: 0;
+}
+
+.pdf-upload-area .upload-placeholder:hover {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+}
+
+.pdf-upload-area .upload-placeholder:hover::before {
+  opacity: 1;
+  animation: shimmer 1.5s ease-in-out;
+}
+
+.pdf-upload-area .upload-placeholder svg {
+  color: #ef4444;
+  margin-bottom: 0;
+  transition: all 0.3s;
+}
+
+.pdf-upload-area .upload-placeholder:hover svg {
+  transform: scale(1.1) rotate(5deg);
+  color: #dc2626;
+}
+
+.pdf-upload-area .upload-placeholder span {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.pdf-upload-area .upload-placeholder small {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.pdf-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 20px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdf-preview:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+.pdf-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pdf-info svg {
+  color: #ef4444;
+  filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.3));
+}
+
+.pdf-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.pdf-name {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+}
+
+.pdf-size {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.remove-pdf {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.4);
+}
+
+.remove-pdf:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 12px 24px rgba(239, 68, 68, 0.5);
+}
+
+/* Hidden file inputs */
+.file-input {
+  display: none;
+}
